@@ -24,7 +24,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
-          tools: composer:v2, phpunit
+          tools: composer:v2
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -51,4 +51,4 @@ jobs:
           composer update --${{ matrix.prefer }} --prefer-dist --no-interaction --no-suggest
 
       - name: Test with phpunit
-        run: phpunit
+        run: vendor/bin/phpunit
