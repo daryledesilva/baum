@@ -2,11 +2,11 @@
 
 class ClusterTestCase extends BaumTestCase {
 
-  public static function setUpBeforeClass() {
+  public static function setUpBeforeClass(): void {
     with(new ClusterMigrator)->up();
   }
 
-  public function setUp() {
+  protected function setUp(): void {
     with(new ClusterSeeder)->run();
   }
 

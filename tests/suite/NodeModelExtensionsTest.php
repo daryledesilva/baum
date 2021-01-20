@@ -3,13 +3,13 @@
 use Mockery as m;
 use Illuminate\Database\Capsule\Manager as DB;
 
-class NodeModelExtensionsTest extends PHPUnit_Framework_TestCase {
+class NodeModelExtensionsTest extends \PHPUnit\Framework\TestCase {
 
-  public static function setUpBeforeClass() {
+  public static function setUpBeforeClass(): void {
     with(new CategoryMigrator)->up();
   }
 
-  public function setUp() {
+  protected function setUp(): void {
     DB::table('categories')->delete();
   }
 
@@ -17,7 +17,7 @@ class NodeModelExtensionsTest extends PHPUnit_Framework_TestCase {
     return forward_static_call_array(array($className, 'where'), array('name', '=', $name))->first();
   }
 
-  public function tearDown() {
+  protected function tearDown(): void {
     m::close();
   }
 
@@ -48,6 +48,9 @@ class NodeModelExtensionsTest extends PHPUnit_Framework_TestCase {
     $this->assertTrue(SoftCategory::softDeletesEnabled());
   }
 
+  /**
+   * @doesNotPerformAssertions
+   */
   public function testMoving() {
     $dispatcher = Category::getEventDispatcher();
 
@@ -62,6 +65,9 @@ class NodeModelExtensionsTest extends PHPUnit_Framework_TestCase {
     Category::setEventDispatcher($dispatcher);
   }
 
+  /**
+   * @doesNotPerformAssertions
+   */
   public function testMoved() {
     $dispatcher = Category::getEventDispatcher();
 
@@ -108,10 +114,8 @@ class NodeModelExtensionsTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals('Some node', $node->name);
   }
 
-  /**
-   * @expectedException Illuminate\Database\Eloquent\ModelNotFoundException
-   */
   public function testReloadThrowsExceptionIfNodeCannotBeLocated() {
+    $this->expectException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
     $node = Category::create(['name' => 'Some node']);
     $this->assertNotNull($node->getKey());
 

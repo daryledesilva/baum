@@ -2,7 +2,7 @@
 
 class CategoryScopedTest extends CategoryTestCase {
 
-  public function setUp() {
+  protected function setUp(): void {
     with(new MultiScopedCategorySeeder)->run();
   }
 
@@ -252,30 +252,24 @@ class CategoryScopedTest extends CategoryTestCase {
     $this->assertArraysAreEqual($expectedWhole2, hmap(OrderedScopedCategory::where('company_id', 2)->get()->toHierarchy()->toArray()));
   }
 
-  /**
-   * @expectedException Baum\MoveNotPossibleException
-   */
   public function testNodesCannotMoveBetweenScopes() {
+    $this->expectException(\Baum\MoveNotPossibleException::class);
     $child4 = $this->categories('Child 4', 'ScopedCategory');
     $root1 = $this->categories('Root 1', 'ScopedCategory');
 
     $child4->makeChildOf($root1);
   }
 
-  /**
-   * @expectedException Baum\MoveNotPossibleException
-   */
   public function testNodesCannotMoveBetweenScopesMultiple() {
+    $this->expectException(\Baum\MoveNotPossibleException::class);
     $root1 = $this->categories('Root 1', 'MultiScopedCategory');
     $child4 = $this->categories('Child 4', 'MultiScopedCategory');
 
     $child4->makeChildOf($root1);
   }
 
-  /**
-   * @expectedException Baum\MoveNotPossibleException
-   */
   public function testNodesCannotMoveBetweenScopesMultiple2() {
+    $this->expectException(\Baum\MoveNotPossibleException::class);
     $root1 = $this->categories('Racine 1', 'MultiScopedCategory');
     $child2 = $this->categories('Hijo 2', 'MultiScopedCategory');
 
@@ -283,6 +277,9 @@ class CategoryScopedTest extends CategoryTestCase {
   }
 
   // TODO: Moving nodes between scopes is problematic ATM. Fix it or find a work-around.
+  /**
+   * @doesNotPerformAssertions
+   */
   public function testMoveNodeBetweenScopes() {
     $this->markTestSkipped();
 

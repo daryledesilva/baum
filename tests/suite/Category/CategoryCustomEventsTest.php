@@ -4,10 +4,13 @@ use Mockery as m;
 
 class CategoryCustomEventsTest extends CategoryTestCase {
 
-  public function tearDown() {
+  protected function tearDown(): void {
     m::close();
   }
 
+  /**
+   * @doesNotPerformAssertions
+   */
   public function testMovementEventsFire() {
     $dispatcher = Category::getEventDispatcher();
     Category::setEventDispatcher($events = m::mock('Illuminate\Events\Dispatcher'));

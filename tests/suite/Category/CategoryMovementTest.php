@@ -12,10 +12,8 @@ class CategoryMovementTest extends CategoryTestCase {
     $this->assertTrue(Category::isValidNestedSet());
   }
 
-  /**
-   * @expectedException Baum\MoveNotPossibleException
-   */
   public function testMoveLeftRaisesAnExceptionWhenNotPossible() {
+    $this->expectException(\Baum\MoveNotPossibleException::class);
     $node = $this->categories('Child 2');
 
     $node->moveLeft();
@@ -56,10 +54,8 @@ class CategoryMovementTest extends CategoryTestCase {
     $this->assertTrue(Category::isValidNestedSet());
   }
 
-  /**
-   * @expectedException Baum\MoveNotPossibleException
-   */
   public function testMoveToLeftOfRaisesAnExceptionWhenNotPossible() {
+    $this->expectException(\Baum\MoveNotPossibleException::class);
     $this->categories('Child 1')->moveToLeftOf($this->categories('Child 1')->getLeftSibling());
   }
 
@@ -97,10 +93,8 @@ class CategoryMovementTest extends CategoryTestCase {
     $this->assertTrue(Category::isValidNestedSet());
   }
 
-  /**
-   * @expectedException Baum\MoveNotPossibleException
-   */
   public function testMoveRightRaisesAnExceptionWhenNotPossible() {
+    $this->expectException(\Baum\MoveNotPossibleException::class);
     $node = $this->categories('Child 2');
 
     $node->moveRight();
@@ -141,10 +135,8 @@ class CategoryMovementTest extends CategoryTestCase {
     $this->assertTrue(Category::isValidNestedSet());
   }
 
-  /**
-   * @expectedException Baum\MoveNotPossibleException
-   */
   public function testMoveToRightOfRaisesAnExceptionWhenNotPossible() {
+    $this->expectException(\Baum\MoveNotPossibleException::class);
     $this->categories('Child 3')->moveToRightOf($this->categories('Child 3')->getRightSibling());
   }
 
@@ -436,46 +428,36 @@ class CategoryMovementTest extends CategoryTestCase {
     $this->assertEquals(9, $this->categories('Child 2.1')->getRight());
   }
 
-  /**
-   * @expectedException Baum\MoveNotPossibleException
-   */
   public function testUnpersistedNodeCannotBeMoved() {
+    $this->expectException(\Baum\MoveNotPossibleException::class);
     $unpersisted = new Category(array('name' => 'Unpersisted'));
 
     $unpersisted->moveToRightOf($this->categories('Root 1'));
   }
 
-  /**
-   * @expectedException Baum\MoveNotPossibleException
-   */
   public function testUnpersistedNodeCannotBeMadeChild() {
+    $this->expectException(\Baum\MoveNotPossibleException::class);
     $unpersisted = new Category(array('name' => 'Unpersisted'));
 
     $unpersisted->makeChildOf($this->categories('Root 1'));
   }
 
-  /**
-   * @expectedException Baum\MoveNotPossibleException
-   */
   public function testNodesCannotBeMovedToItself() {
+    $this->expectException(\Baum\MoveNotPossibleException::class);
     $node = $this->categories('Child 1');
 
     $node->moveToRightOf($node);
   }
 
-  /**
-   * @expectedException Baum\MoveNotPossibleException
-   */
   public function testNodesCannotBeMadeChildOfThemselves() {
+    $this->expectException(\Baum\MoveNotPossibleException::class);
     $node = $this->categories('Child 1');
 
     $node->makeChildOf($node);
   }
 
-  /**
-   * @expectedException Baum\MoveNotPossibleException
-   */
   public function testNodesCannotBeMovedToDescendantsOfThemselves() {
+    $this->expectException(\Baum\MoveNotPossibleException::class);
     $node = $this->categories('Root 1');
 
     $node->makeChildOf($this->categories('Child 2.1'));
